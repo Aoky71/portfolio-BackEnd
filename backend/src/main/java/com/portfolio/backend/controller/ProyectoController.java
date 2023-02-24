@@ -5,6 +5,9 @@ import com.portfolio.backend.model.Proyecto;
 import com.portfolio.backend.service.IProyectoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class ProyectoController {
     
@@ -22,37 +25,45 @@ public class ProyectoController {
     private IProyectoService interProyecto;
     
     
-    @GetMapping("/proyectos/traer")
-    public List<Proyecto> getProyectos() {
-    
-    return interProyecto.getProyectos();
+    @GetMapping("/api/proyecto/traer")
+    public List<Proyecto> getProyecto() {
+    return interProyecto.getProyecto();
     }
     
-    @PostMapping("/proyecto/crear")
-    public String createProyecto(@RequestBody Proyecto pro){
+    @GetMapping("/api/proyecto/{id}")
+    public Proyecto getProyectoById(@PathVariable Long id) {
+       return interProyecto.findProyecto(id);
+    }
+    
+    @PostMapping("/api/proyecto/crear")
+    public ResponseEntity<Object> createProyecto(@RequestBody Proyecto pro){
         
         interProyecto.saveProyecto(pro);
-        return "La seccion 'proyecto' fue creada correctamente";
+        return new ResponseEntity<>(new Result("La seccion 'proyecto' fue creada correctamente"),HttpStatus.OK);
     }
     
-    @DeleteMapping("/proyecto/borrar/{id}")
+    @DeleteMapping("/api/proyecto/borrar/{id}")
     public String deleteProyecto (@PathVariable Long id){
         
         interProyecto.deleteProyecto(id);
         return "La seccion 'proyecto' fue eliminada correctamente";
     }
     
-    @PutMapping("/proyecto/editar/{id}")
+    @PutMapping("/api/proyecto/editar/{id}")
     public Proyecto editProyecto (@PathVariable Long id,
-                                  @RequestParam("nombre del proyecto") String nuevoNombre,
-                                  @RequestParam("Descripcion del proyecto") String nuevaDescripcion,
-                                  @RequestParam("URL del proyecto") String nuevaUrl){
+                                  @RequestParam("nombre del proyecto") String nombreProyecto,
+                                  @RequestParam("Descripcion del proyecto") String descripcionProyecto,
+                                  @RequestParam("URL del proyecto") String urlProyecto,
+                                  @RequestParam("fecha del Proyecto")String fechaProyecto,
+                                  @RequestParam("url de la imagen")String urlImagen){
         
         Proyecto pro = interProyecto.findProyecto(id);
         
-        pro.setDescripcionProyecto(nuevaDescripcion);
-        pro.setNombreProyecto(nuevaUrl);
-        pro.setUrlProyecto(nuevoNombre);
+        pro.setDescripcionProyecto(descripcionProyecto);
+        pro.setNombreProyecto(nombreProyecto);
+        pro.setUrlProyecto(urlProyecto);
+        pro.setFechaProyecto(fechaProyecto);
+        pro.setUrlImagen(urlImagen);
         
         interProyecto.saveProyecto(pro);
         return pro;

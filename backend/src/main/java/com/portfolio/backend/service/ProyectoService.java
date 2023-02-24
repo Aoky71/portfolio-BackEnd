@@ -15,7 +15,7 @@ public class ProyectoService implements IProyectoService {
     private ProyectoRepository proRepository;
 
     @Override
-    public List<Proyecto> getProyectos() {
+    public List<Proyecto> getProyecto() {
          
         List<Proyecto> listaProyectos = proRepository.findAll();
         return listaProyectos;

@@ -5,6 +5,9 @@ import com.portfolio.backend.model.AcercaDe;
 import com.portfolio.backend.service.IAcercaDeService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,40 +18,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class AcercaDeController {
     
     @Autowired
     private IAcercaDeService interAcercaDe;
     
-    @GetMapping("/acercade/traer")
+    @GetMapping("/api/acercade/traer")
     public List <AcercaDe> getAcerca() {
         
         return interAcercaDe.getAcercaDe();
     }
     
-    @PostMapping("/acercade/crear")
-    public String createAcerca(@RequestBody AcercaDe acerca){
-        
-        interAcercaDe.saveAcercaDe(acerca);
-        return "La seccion 'acerca de' fue creada correctamente";
+    @GetMapping("/api/acercade/{id}")
+    public AcercaDe getAcercaById(@PathVariable Long id) {
+       return interAcercaDe.findAcercaDe(id);
     }
     
-    @DeleteMapping("/acerca/borrar/{id}")
+    @PostMapping("/api/acercade/crear")
+    public ResponseEntity<Object> createAcerca(@RequestBody AcercaDe acerca){
+        
+        interAcercaDe.saveAcercaDe(acerca);
+        return new ResponseEntity<>( new Result("La seccion 'acerca de' fue creada correctamente"),HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/api/acercade/borrar/{id}")
     public String deleteAcerca (@PathVariable Long id){
         
         interAcercaDe.deleteAcercaDe(id);
         return "La seccion 'acerca de' fue elimanada correctamente";
     }
     
-    @PutMapping("/acerca/editar/{id}")
+    @PutMapping("/api/acercade/editar/{id}")
     public AcercaDe editAcerca (@PathVariable Long id,
-                                @RequestParam ("descripcion personal")String nuevaDescripcion,
-                                @RequestParam ("foto de perfil") String nuevaFoto) {
+                                @RequestParam ("descripcion personal")String descripcionPersonal) {
         
         AcercaDe acerca = interAcercaDe.findAcercaDe(id);
         
-        acerca.setDescripcionPersonal(nuevaDescripcion);
-        acerca.setImagePerfil(nuevaFoto);
+        acerca.setDescripcionPersonal(descripcionPersonal);
         
         interAcercaDe.saveAcercaDe(acerca);
         return acerca;

@@ -18,16 +18,22 @@ public class Educacion {
     private String nombreInstituto;
     private String fechaInicio;
     private String descripcionInstitucion;
+    private String logo;
+    private String urlCertificado;
 
     public Educacion() {
     }
 
-    public Educacion(Long id, String nombreInstituto, String fechaInicio, String descripcionInstitucion) {
+    public Educacion(Long id, String nombreInstituto, String fechaInicio, String descripcionInstitucion, String logo, String urlCertificado) {
         this.id = id;
         this.nombreInstituto = nombreInstituto;
         this.fechaInicio = fechaInicio;
         this.descripcionInstitucion = descripcionInstitucion;
+        this.logo = logo;
+        this.urlCertificado = urlCertificado;
     }
+
+    
     
     
 }

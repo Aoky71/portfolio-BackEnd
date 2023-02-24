@@ -15,17 +15,17 @@ public class AcercaDe {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
-    private String descripcionPersonal;
-    private String imagePerfil;
+    private String descripcionPersonal;;
 
     public AcercaDe() {
     }
 
-    public AcercaDe(Long id, String descripcionPersonal, String imagePerfil) {
+    public AcercaDe(Long id, String descripcionPersonal) {
         this.id = id;
         this.descripcionPersonal = descripcionPersonal;
-        this.imagePerfil = imagePerfil;
     }
+
+   
     
     
     
