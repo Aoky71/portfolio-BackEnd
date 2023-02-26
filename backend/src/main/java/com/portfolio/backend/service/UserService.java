@@ -27,13 +27,14 @@ public class UserService implements IUserService {
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public User findUser(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        return user;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+  
     
 }
