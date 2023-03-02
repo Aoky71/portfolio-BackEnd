@@ -1,9 +1,11 @@
 
 package com.portfolio.backend.controller;
 
+import com.portfolio.backend.model.Mensaje;
 import com.portfolio.backend.model.Proyecto;
 import com.portfolio.backend.service.IProyectoService;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+/*
+Controlador de la seccion "Proyectos" donde se detallara los proyectos realizados con un enlace al github
+y a su pagina (si es que existe).
+*/
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -37,7 +44,21 @@ public class ProyectoController {
     
     @PostMapping("/api/proyecto/crear")
     public ResponseEntity<Object> createProyecto(@RequestBody Proyecto pro){
-        
+        if(StringUtils.isBlank(pro.getDescripcionProyecto())){
+            return new ResponseEntity(new Mensaje("La descripcion del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(pro.getNombreProyecto())){
+            return new ResponseEntity(new Mensaje("El nombre del proyecto es obligatorio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(pro.getFechaProyecto())){
+            return new ResponseEntity(new Mensaje("La fecha del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(pro.getUrlProyecto())){
+            return new ResponseEntity(new Mensaje("La url al proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+         if (StringUtils.length(pro.getDescripcionProyecto())>1500){
+            return new ResponseEntity(new Mensaje("La descripcion no puede superar los 1500 caracteres"), HttpStatus.BAD_REQUEST);
+        }
         interProyecto.saveProyecto(pro);
         return new ResponseEntity<>(new Result("La seccion 'proyecto' fue creada correctamente"),HttpStatus.OK);
     }
@@ -50,7 +71,7 @@ public class ProyectoController {
     }
     
     @PutMapping("/api/proyecto/editar/{id}")
-    public Proyecto editProyecto (@PathVariable Long id,
+    public ResponseEntity<?> editProyecto (@PathVariable Long id,
                                   @RequestParam("nombre del proyecto") String nombreProyecto,
                                   @RequestParam("Descripcion del proyecto") String descripcionProyecto,
                                   @RequestParam("URL del proyecto") String urlProyecto,
@@ -65,8 +86,24 @@ public class ProyectoController {
         pro.setFechaProyecto(fechaProyecto);
         pro.setUrlImagen(urlImagen);
         
+        if(StringUtils.isBlank(pro.getDescripcionProyecto())){
+            return new ResponseEntity(new Mensaje("La descripcion del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(pro.getNombreProyecto())){
+            return new ResponseEntity(new Mensaje("El nombre del proyecto es obligatorio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(pro.getFechaProyecto())){
+            return new ResponseEntity(new Mensaje("La fecha del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(pro.getUrlProyecto())){
+            return new ResponseEntity(new Mensaje("La url al proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+         if (StringUtils.length(pro.getDescripcionProyecto())>1500){
+            return new ResponseEntity(new Mensaje("La descripcion no puede superar los 1500 caracteres"), HttpStatus.BAD_REQUEST);
+        }
+        
         interProyecto.saveProyecto(pro);
-        return pro;
+        return new ResponseEntity(new Mensaje("La seccion 'Proyecto' fue actualizada correctamente"), HttpStatus.OK);
     }
     
 }

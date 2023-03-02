@@ -1,8 +1,10 @@
 package com.portfolio.backend.controller;
 
 import com.portfolio.backend.model.Educacion;
+import com.portfolio.backend.model.Mensaje;
 import com.portfolio.backend.service.IEducacionService;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+/*
+Controlador para la seccion "educacion" donde se detallara la institucion y periodo de estudio, asi como
+su certificado.
+*/
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -35,6 +42,18 @@ public class EducacionController {
 
     @PostMapping("/api/educacion/crear")
     public ResponseEntity<Object> createEducacion(@RequestBody Educacion edu) {
+        if(StringUtils.isBlank(edu.getNombreInstituto())){
+            return new ResponseEntity(new Mensaje("El nombre de la institucion es obligatorio"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(edu.getDescripcionInstitucion())){
+            return new ResponseEntity(new Mensaje("La descripcion no puede estar vacia"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(edu.getFechaInicio())){
+            return new ResponseEntity(new Mensaje("La fecha es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+         if (StringUtils.length(edu.getDescripcionInstitucion())>1000){
+            return new ResponseEntity(new Mensaje("La descripcion no puede superar los 2000 caracteres"), HttpStatus.BAD_REQUEST);
+        }
         interEducacion.saveEducacion(edu);
         return new ResponseEntity<>(new Result("La institucion fue creada"), HttpStatus.OK);
     }
@@ -47,7 +66,7 @@ public class EducacionController {
     }
 
     @PutMapping("/api/educacion/editar/{id}")
-    public Educacion editEducacion(@PathVariable Long id,
+    public ResponseEntity<?> editEducacion(@PathVariable Long id,
             @RequestParam("Instituto") String nombreInstituto,
             @RequestParam("Fecha") String fechaInicio,
             @RequestParam("Descripcion") String descripcionInstitucion,
@@ -59,8 +78,20 @@ public class EducacionController {
         edu.setDescripcionInstitucion(descripcionInstitucion);
         edu.setLogo(logo);
         edu.setUrlCertificado(urlCertificado);
+         if(StringUtils.isBlank(edu.getNombreInstituto())){
+            return new ResponseEntity(new Mensaje("El nombre de la institucion es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(edu.getDescripcionInstitucion())){
+            return new ResponseEntity(new Mensaje("La descrpcion es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+        if(StringUtils.isBlank(edu.getFechaInicio())){
+            return new ResponseEntity(new Mensaje("La fecha es obligatoria"), HttpStatus.BAD_REQUEST);
+        }
+         if (StringUtils.length(edu.getDescripcionInstitucion())>1000){
+            return new ResponseEntity(new Mensaje("La descripcion no puede superar los 1000 caracteres"), HttpStatus.BAD_REQUEST);
+        }
         interEducacion.saveEducacion(edu);
-        return edu;
+        return new ResponseEntity(new Mensaje("La seccion 'educacion' fue ctualizada correctamente"),HttpStatus.OK);
 
     }
 

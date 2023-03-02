@@ -1,9 +1,12 @@
 
 package com.portfolio.backend.controller;
 
+import com.portfolio.backend.model.Mensaje;
 import com.portfolio.backend.model.Skill;
 import com.portfolio.backend.service.ISkillService;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+/*
+Controlador de la seccion 'Skills' donde se nombrara alguna habilidad y su porcentaje en una barra de progreso.
+*/
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -38,6 +45,9 @@ public class SkillController {
     @PostMapping("/api/skill/crear")
     public ResponseEntity<Object> createSkill(@RequestBody Skill skl){
         
+        if(StringUtils.isBlank(skl.getNombreSkill())){
+            return new ResponseEntity(new Mensaje("El nombre de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
+        }     
         interSkill.saveSkill(skl);
         return new ResponseEntity<>(new Result("La seccion 'skill' fue creada correctamente"),HttpStatus.OK);
     }
@@ -50,7 +60,7 @@ public class SkillController {
     }
     
     @PutMapping("/api/skill/editar/{id}")
-    public Skill editSkill (@PathVariable Long id,
+    public ResponseEntity<?> editSkill (@PathVariable Long id,
                             @RequestParam ("nombre") String nombreSkill,
                             @RequestParam ("Grado") int gradoSkill){
         
@@ -59,8 +69,12 @@ public class SkillController {
         skl.setNombreSkill(nombreSkill);
         skl.setGradoSkill(gradoSkill);
         
+        if(StringUtils.isBlank(skl.getNombreSkill())){
+            return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+        }   
+        
         interSkill.saveSkill(skl);
-        return skl;
+        return new ResponseEntity(new Mensaje("La seccion 'skill' fue actualizada correctamente"), HttpStatus.OK);
     }
     
 }

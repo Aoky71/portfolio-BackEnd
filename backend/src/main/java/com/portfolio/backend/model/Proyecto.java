@@ -1,6 +1,7 @@
 package com.portfolio.backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +13,14 @@ public class Proyecto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @NotBlank
     private String nombreProyecto;
+    @NotBlank
+    @Column(length = 1500)
     private String descripcionProyecto;
+    @NotBlank
     private String urlProyecto;
+    @NotBlank
     private String fechaProyecto;
     private String urlImagen;
 

@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
 				// Los endpoints /login y /register y GET no necesitan ser autenticados.			
-				.authorizeRequests().antMatchers("/login","/register","/api/acercade/traer", "/api/educacion/traer","/api/experiencia/traer","/api/persona/traer","/api/proyecto/traer","/api/skill/traer").permitAll().
+				.authorizeRequests().antMatchers("/login","/register","/api/**").permitAll().
 				// El resto de los endpoints necesita el token JWT para validar el request.
 				anyRequest().authenticated().and().
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

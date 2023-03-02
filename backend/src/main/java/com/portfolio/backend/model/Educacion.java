@@ -3,6 +3,7 @@ package com.portfolio.backend.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,12 @@ public class Educacion {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
+    @NotBlank
     private String nombreInstituto;
+    @NotBlank
     private String fechaInicio;
+   @NotBlank
+   @Column(length = 1000) 
     private String descripcionInstitucion;
     private String logo;
     private String urlCertificado;

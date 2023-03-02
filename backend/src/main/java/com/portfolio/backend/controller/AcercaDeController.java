@@ -2,8 +2,10 @@
 package com.portfolio.backend.controller;
 
 import com.portfolio.backend.model.AcercaDe;
+import com.portfolio.backend.model.Mensaje;
 import com.portfolio.backend.service.IAcercaDeService;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+/*
+Controlador para la seccion "acerca de" que contendra la descripcion personal
+*/
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -37,7 +43,11 @@ public class AcercaDeController {
     
     @PostMapping("/api/acercade/crear")
     public ResponseEntity<Object> createAcerca(@RequestBody AcercaDe acerca){
-        
+          if(StringUtils.isBlank(acerca.getDescripcionPersonal())){
+            return new ResponseEntity(new Mensaje("La descripcion personal no puede estar vacia"), HttpStatus.BAD_REQUEST);
+        } if (StringUtils.length(acerca.getDescripcionPersonal())>2000){
+            return new ResponseEntity(new Mensaje("La descripcion no puede superar los 2000 caracteres"), HttpStatus.BAD_REQUEST);
+        }
         interAcercaDe.saveAcercaDe(acerca);
         return new ResponseEntity<>( new Result("La seccion 'acerca de' fue creada correctamente"),HttpStatus.OK);
     }
@@ -50,15 +60,20 @@ public class AcercaDeController {
     }
     
     @PutMapping("/api/acercade/editar/{id}")
-    public AcercaDe editAcerca (@PathVariable Long id,
+    public ResponseEntity<?> editAcerca (@PathVariable Long id,
                                 @RequestParam ("descripcion personal")String descripcionPersonal) {
         
         AcercaDe acerca = interAcercaDe.findAcercaDe(id);
-        
         acerca.setDescripcionPersonal(descripcionPersonal);
         
+        if(StringUtils.isBlank(acerca.getDescripcionPersonal())){
+            return new ResponseEntity(new Mensaje("La descripcion personal no puede estar vacia"), HttpStatus.BAD_REQUEST);
+        }
+         if (StringUtils.length(acerca.getDescripcionPersonal())>2000){
+            return new ResponseEntity(new Mensaje("La descripcion no puede superar los 2000 caracteres"), HttpStatus.BAD_REQUEST);
+        }
         interAcercaDe.saveAcercaDe(acerca);
-        return acerca;
+        return new ResponseEntity(new Mensaje("la seccion 'acerca de' fue actualizada correctamente"),HttpStatus.OK);
         
     }
     
