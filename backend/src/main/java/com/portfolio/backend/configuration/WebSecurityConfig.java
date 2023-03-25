@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -53,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-
+      
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
@@ -70,6 +71,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Configuración del filtro CORS
 		httpSecurity.cors().and();
 	}
+         
+          
+        /*
+        @Override
+
+        
+        protected void configure(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity.csrf().disable()
+        .authorizeRequests()
+            .antMatchers(HttpMethod.GET, "/**").permitAll() // Permitir acceso GET a todos los endpoints
+            .antMatchers("/login", "/register").permitAll() // Permitir acceso sin autorización a /login y /register
+            .antMatchers("/api/**").authenticated() // Requiere autorización para todos los demás endpoints bajo /api
+        .and()
+            .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .cors();
+}
+*/
         
         @Bean
 	public CorsConfigurationSource corsConfigurationSource() {

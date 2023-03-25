@@ -1,6 +1,10 @@
+
 package com.portfolio.backend.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Skill {
-
+public class SoftSkill {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -20,17 +24,16 @@ public class Skill {
     @NotBlank
     private String urlImagen;
 
-    public Skill() {
+    public SoftSkill() {
     }
 
-    public Skill(Long id, String nombreSkill, String descripcionSkill, String urlImagen) {
+    public SoftSkill(Long id, String nombreSkill, String descripcionSkill, String urlImagen) {
         this.id = id;
         this.nombreSkill = nombreSkill;
         this.descripcionSkill = descripcionSkill;
         this.urlImagen = urlImagen;
     }
-
     
-
-
+    
+    
 }

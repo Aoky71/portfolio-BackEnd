@@ -1,8 +1,9 @@
+
 package com.portfolio.backend.controller;
 
 import com.portfolio.backend.model.Mensaje;
-import com.portfolio.backend.model.Skill;
-import com.portfolio.backend.service.ISkillService;
+import com.portfolio.backend.model.SoftSkill;
+import com.portfolio.backend.service.ISoftSkillService;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,79 +20,83 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
-Controlador de la seccion 'Skills' donde se nombrara alguna habilidad y su porcentaje en una barra de progreso.
+Controlador de la seccion 'Soft Skills' donde se nombrara alguna habilidad blanda.
  */
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-public class SkillController {
-
+public class SoftSkillController {
+    
     @Autowired
-    private ISkillService interSkill;
+    private ISoftSkillService interSoft;
 
-    @GetMapping("/api/skill/traer")
-    public List<Skill> getSkills() {
+    @GetMapping("/api/soft/traer")
+    public List<SoftSkill> getSoftSkills() {
 
-        return interSkill.getSkills();
+        return interSoft.getSoftSkills();
     }
 
-    @GetMapping("/api/skill/{id}")
-    public Skill getSkill(@PathVariable Long id) {
-        return interSkill.findSkill(id);
+    @GetMapping("/api/soft/{id}")
+    public SoftSkill getSoftSkill(@PathVariable Long id) {
+        return interSoft.findSoftSkill(id);
     }
 
-    @PostMapping("/api/skill/crear")
-    public ResponseEntity<Object> createSkill(@RequestBody Skill skl) {
+    @PostMapping("/api/soft/crear")
+    public ResponseEntity<Object> createSoftSkill(@RequestBody SoftSkill soft) {
 
-        if (StringUtils.isBlank(skl.getNombreSkill())) {
+        if (StringUtils.isBlank(soft.getNombreSkill())) {
             return new ResponseEntity(new Mensaje("El nombre de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.isBlank(skl.getDescripcionSkill())) {
+        if (StringUtils.isBlank(soft.getDescripcionSkill())) {
             return new ResponseEntity(new Mensaje("La descripcion de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.length(skl.getDescripcionSkill()) > 200) {
+        if (StringUtils.length(soft.getDescripcionSkill()) > 200) {
             return new ResponseEntity(new Mensaje("La descripcion no puede superar los 200 caracteres"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.isBlank(skl.getUrlImagen())) {
+        if (StringUtils.isBlank(soft.getUrlImagen())) {
             return new ResponseEntity(new Mensaje("La url de la imagen de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
         }
-        interSkill.saveSkill(skl);
-        return new ResponseEntity<>(new Result("La seccion 'skill' fue creada correctamente"), HttpStatus.OK);
+        interSoft.saveSoftSkill(soft);
+        return new ResponseEntity<>(new Result("La seccion 'Soft skill' fue creada correctamente"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/skill/borrar/{id}")
-    public String deleteSkill(@PathVariable Long id) {
+    @DeleteMapping("/api/soft/borrar/{id}")
+    public String deleteSoftSkill(@PathVariable Long id) {
 
-        interSkill.deleteSkill(id);
+        interSoft.deleteSotfSkill(id);
         return "La skill fue elimanada correctamente";
     }
 
-    @PutMapping("/api/skill/editar/{id}")
-    public ResponseEntity<?> editSkill(@PathVariable Long id,
+    @PutMapping("/api/soft/editar/{id}")
+    public ResponseEntity<?> editSoftSkill(@PathVariable Long id,
             @RequestParam("nombre") String nombreSkill,
             @RequestParam("descripcion") String descripcionSkill,
             @RequestParam("urlImagen") String urlImagen) {
 
-        Skill skl = interSkill.findSkill(id);
+        SoftSkill soft = interSoft.findSoftSkill(id);
 
-        skl.setNombreSkill(nombreSkill);
-        skl.setDescripcionSkill(descripcionSkill);
-        skl.setUrlImagen(urlImagen);
+        soft.setNombreSkill(nombreSkill);
+        soft.setDescripcionSkill(descripcionSkill);
+        soft.setUrlImagen(urlImagen);
 
-        if (StringUtils.isBlank(skl.getNombreSkill())) {
-            return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
+        if (StringUtils.isBlank(soft.getNombreSkill())) {
+            return new ResponseEntity(new Mensaje("El nombre de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.isBlank(skl.getDescripcionSkill())) {
+        if (StringUtils.isBlank(soft.getDescripcionSkill())) {
             return new ResponseEntity(new Mensaje("La descripcion de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.length(skl.getDescripcionSkill()) > 200) {
+        if (StringUtils.length(soft.getDescripcionSkill()) > 200) {
             return new ResponseEntity(new Mensaje("La descripcion no puede superar los 200 caracteres"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.isBlank(skl.getUrlImagen())) {
+        if (StringUtils.isBlank(soft.getUrlImagen())) {
             return new ResponseEntity(new Mensaje("La url de la imagen de la 'skill' es obligatoria"), HttpStatus.BAD_REQUEST);
         }
-
-        interSkill.saveSkill(skl);
-        return new ResponseEntity(new Mensaje("La seccion 'skill' fue actualizada correctamente"), HttpStatus.OK);
+        interSoft.saveSoftSkill(soft);
+        
+        return new ResponseEntity(new Mensaje("La seccion 'Soft skill' fue actualizada correctamente"), HttpStatus.OK);
     }
 
 }
+
+    
+

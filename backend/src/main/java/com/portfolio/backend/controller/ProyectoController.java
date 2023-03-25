@@ -50,8 +50,8 @@ public class ProyectoController {
         if(StringUtils.isBlank(pro.getNombreProyecto())){
             return new ResponseEntity(new Mensaje("El nombre del proyecto es obligatorio"), HttpStatus.BAD_REQUEST);
         }
-        if(StringUtils.isBlank(pro.getFechaProyecto())){
-            return new ResponseEntity(new Mensaje("La fecha del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(pro.getUrlGit())){
+            return new ResponseEntity(new Mensaje("La url al gitHub del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
         }
         if(StringUtils.isBlank(pro.getUrlProyecto())){
             return new ResponseEntity(new Mensaje("La url al proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
@@ -75,7 +75,7 @@ public class ProyectoController {
                                   @RequestParam("nombre del proyecto") String nombreProyecto,
                                   @RequestParam("Descripcion del proyecto") String descripcionProyecto,
                                   @RequestParam("URL del proyecto") String urlProyecto,
-                                  @RequestParam("fecha del Proyecto")String fechaProyecto,
+                                  @RequestParam("URL github")String urlGit,
                                   @RequestParam("url de la imagen")String urlImagen){
         
         Proyecto pro = interProyecto.findProyecto(id);
@@ -83,7 +83,7 @@ public class ProyectoController {
         pro.setDescripcionProyecto(descripcionProyecto);
         pro.setNombreProyecto(nombreProyecto);
         pro.setUrlProyecto(urlProyecto);
-        pro.setFechaProyecto(fechaProyecto);
+        pro.setUrlGit(urlGit);
         pro.setUrlImagen(urlImagen);
         
         if(StringUtils.isBlank(pro.getDescripcionProyecto())){
@@ -92,8 +92,8 @@ public class ProyectoController {
         if(StringUtils.isBlank(pro.getNombreProyecto())){
             return new ResponseEntity(new Mensaje("El nombre del proyecto es obligatorio"), HttpStatus.BAD_REQUEST);
         }
-        if(StringUtils.isBlank(pro.getFechaProyecto())){
-            return new ResponseEntity(new Mensaje("La fecha del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
+        if(StringUtils.isBlank(pro.getUrlGit())){
+            return new ResponseEntity(new Mensaje("La url al GitHub del proyecto es obligatoria"), HttpStatus.BAD_REQUEST);
         }
         if(StringUtils.isBlank(pro.getUrlProyecto())){
             return new ResponseEntity(new Mensaje("La url al proyecto es obligatoria"), HttpStatus.BAD_REQUEST);

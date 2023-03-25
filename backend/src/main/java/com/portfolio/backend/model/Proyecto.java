@@ -21,19 +21,22 @@ public class Proyecto {
     @NotBlank
     private String urlProyecto;
     @NotBlank
-    private String fechaProyecto;
+    private String urlGit;
+    @NotBlank
     private String urlImagen;
 
     public Proyecto() {
     }
 
-    public Proyecto(Long id, String nombreProyecto, String descripcionProyecto, String urlProyecto, String fechaProyecto, String urlImagen) {
+    public Proyecto(Long id, String nombreProyecto, String descripcionProyecto, String urlProyecto, String urlGit, String urlImagen) {
         this.id = id;
         this.nombreProyecto = nombreProyecto;
         this.descripcionProyecto = descripcionProyecto;
         this.urlProyecto = urlProyecto;
-        this.fechaProyecto = fechaProyecto;
+        this.urlGit = urlGit;
         this.urlImagen = urlImagen;
     }
+
+    
 
 }

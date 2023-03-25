@@ -18,34 +18,21 @@ public class Persona {
     @NotBlank
     private String ocupacion;
     @NotBlank
-    private String ubicacion;
-    @NotBlank
-    private String telefono;
-    @NotBlank
-    private String email;
-    @NotBlank
     private String urlImagenPerfil;
     @NotBlank
     private String urlImagenBanner;
-    @NotBlank
-    private String urlGit;
-    @NotBlank
-    private String urlCv;
-
+    
     public Persona() {
     }
 
-    public Persona(Long id, String nombre, String ocupacion, String ubicacion, String telefono, String email, String urlImagenPerfil, String urlImagenBanner, String urlGit, String urlCv) {
+    public Persona(Long id, String nombre, String ocupacion, String urlImagenPerfil, String urlImagenBanner) {
         this.id = id;
         this.nombre = nombre;
         this.ocupacion = ocupacion;
-        this.ubicacion = ubicacion;
-        this.telefono = telefono;
-        this.email = email;
         this.urlImagenPerfil = urlImagenPerfil;
         this.urlImagenBanner = urlImagenBanner;
-        this.urlGit = urlGit;
-        this.urlCv = urlCv;
     }
+
+    
 
 }
