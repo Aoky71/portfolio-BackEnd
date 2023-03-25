@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 Controlador de la seccion "experiencia laboral" donde se detallara el nombre de la empresa, su descripcion,
 periodo dentro de la misma y la funciona que se desempeño dentro de ella
 */
-
-@CrossOrigin(origins = "http://localhost:4200")
+//en desarrollo:
+//@CrossOrigin(origins = "http://localhost:4200")
+//En produccion:
+@CrossOrigin(origins = "https://portfolio-front-end-9b739.web.app")
 @RestController
 public class ExperienciaLaboralController {
     

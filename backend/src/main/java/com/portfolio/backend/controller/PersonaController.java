@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 Controlador de la seccion "Persona" donde estara nombre, apellido, informacion de contacto, url a imagenes
 del banner y de perfil.
  */
-@CrossOrigin(origins = "http://localhost:4200")
+//En desarrollo:
+//@CrossOrigin(origins = "http://localhost:4200")
+//En produccion:
+@CrossOrigin(origins = "https://portfolio-front-end-9b739.web.app")
 @RestController
 public class PersonaController {
 

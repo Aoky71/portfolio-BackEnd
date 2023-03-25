@@ -24,7 +24,10 @@ Controlador para la seccion "acerca de" que contendra la descripcion personal
 */
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+//En desarrollo:
+//@CrossOrigin(origins = "http://localhost:4200")
+//En produccion:
+@CrossOrigin(origins = "https://portfolio-front-end-9b739.web.app")
 public class AcercaDeController {
     
     @Autowired

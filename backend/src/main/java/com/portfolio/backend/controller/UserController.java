@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 /*
 Controlador de los endpoint para registrarse e iniciar sesion
 */
-
+//En produccion:
+@CrossOrigin(origins = "https://portfolio-front-end-9b739.web.app")
 @RestController
-@CrossOrigin
 public class UserController {
 
 	@Autowired

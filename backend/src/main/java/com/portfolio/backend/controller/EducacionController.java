@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 Controlador para la seccion "educacion" donde se detallara la institucion y periodo de estudio, asi como
 su certificado.
 */
-
-@CrossOrigin(origins = "http://localhost:4200")
+//En desarrollo:
+//@CrossOrigin(origins = "http://localhost:4200")
+//En produccion:
+@CrossOrigin(origins = "https://portfolio-front-end-9b739.web.app")
 @RestController
 public class EducacionController {
 
