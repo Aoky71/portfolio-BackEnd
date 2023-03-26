@@ -1,4 +1,3 @@
-
 package com.portfolio.backend.configuration;
 
 import com.portfolio.backend.security.JwtAuthenticationEntryPoint;
@@ -23,59 +22,54 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-	@Autowired
-	private UserDetailsService jwtUserDetailsService;
+    @Autowired
+    private UserDetailsService jwtUserDetailsService;
 
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
-	
-	@Autowired
-	private PasswordEncoder bcryptEncoder;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// Configura AuthenticationManager para indicarle que servicio tiene que usar
-		// para cargar los datos del usuario para verificar sus credenciales.
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(bcryptEncoder);
-	}
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
-      
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
-				// Los endpoints /login y /register y GET no necesitan ser autenticados.			
-				.authorizeRequests().antMatchers("/login","/register","/api/**").permitAll().
-				// El resto de los endpoints necesita el token JWT para validar el request.
-				anyRequest().authenticated().and().
-				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        // Configura AuthenticationManager para indicarle que servicio tiene que usar
+        // para cargar los datos del usuario para verificar sus credenciales.
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(bcryptEncoder);
+    }
 
-		// Agregamos el filtro para validar el token JWT en cada request.
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-                
-                // Configuración del filtro CORS
-		httpSecurity.cors().and();
-	}
-         
-          
-        /*
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/login", "/register", "/api/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors();
+    }
+
+    /*
         @Override
-
         
         protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.csrf().disable()
@@ -93,21 +87,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .cors();
 }
-*/
-        
-        @Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
-		configuration.setAllowCredentials(true);
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://portfolio-front-end-9b739.web.app", "https://portfolio-front-end-9b739.web.app/portfolio", "https://portfolio-front-end-9b739.web.app/iniciar-sesion"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
 
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 }
-
-
-
